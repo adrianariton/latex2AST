@@ -54,3 +54,9 @@ i would add:
 ```
 where ? marks the power as optional and the accolades around f as optional as well.
 
+
+
+## Z3
+
+- [ ]: TODO: 
+    - implement logic from [https://ericpony.github.io/z3py-tutorial/advanced-examples.htm](https://ericpony.github.io/z3py-tutorial/advanced-examples.htm)
