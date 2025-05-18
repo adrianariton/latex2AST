@@ -12,7 +12,7 @@ class Constant(MathNode):
         self.fname = "const"
 
     def to_z3(self):
-        return self.value
+        return float(self.value)
 
     def to_latex(self):
         return str(self.value)
