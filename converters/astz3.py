@@ -7,3 +7,4 @@ class Z3Context:
         self.solver = Solver()
 
     def parse(self, node: MathNode):
+        pass
