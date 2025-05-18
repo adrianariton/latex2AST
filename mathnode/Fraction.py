@@ -9,7 +9,7 @@ from mathnode.MathNode import MathNode
 class Fraction(MathNode):
     example_message = r"\frac{2}{3}"
 
-    def __init__(self, numerator, denominator):
+    def __init__(self, numerator: MathNode, denominator: MathNode):
         self.numerator = numerator
         self.denominator = denominator
         self.fname = "frac"
@@ -19,6 +19,9 @@ class Fraction(MathNode):
 
     def to_wolfram(self):
         return f"Multiply[{self.numerator.to_wolfram()}, Inv[{self.denominator.to_wolfram()}]]"
+
+    def to_z3(self):
+        return self.numerator.to_z3() / self.denominator.to_z3()
 
     @staticmethod
     def consume(parser: "Parser", command: str):

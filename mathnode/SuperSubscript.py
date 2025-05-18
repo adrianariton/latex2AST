@@ -7,7 +7,7 @@ from mathnode.MathNode import MathNode
 
 
 class Superscript(MathNode):
-    def __init__(self, base, exponent):
+    def __init__(self, base: MathNode, exponent: MathNode):
         self.base = base
         self.exponent = exponent
         self.fname = "superscript"
@@ -17,6 +17,9 @@ class Superscript(MathNode):
 
     def to_latex(self):
         return f"{self.base.to_latex()}^{{{self.exponent.to_latex()}}}"
+
+    def to_z3(self):
+        return self.base.to_z3() ** self.exponent.to_z3()
 
 
 class Subscript(MathNode):

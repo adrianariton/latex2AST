@@ -11,6 +11,9 @@ class Constant(MathNode):
         self.value = value
         self.fname = "const"
 
+    def to_z3(self):
+        return self.value
+
     def to_latex(self):
         return str(self.value)
 

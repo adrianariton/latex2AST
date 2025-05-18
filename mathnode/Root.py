@@ -9,7 +9,7 @@ from mathnode.MathNode import MathNode
 class Root(MathNode):
     example_message = r"\sqrt[4]{4*x} | \sqrt{4*x}"
 
-    def __init__(self, degree, radicand):
+    def __init__(self, degree: MathNode, radicand: MathNode):
         self.degree = degree  # None for square root
         self.radicand = radicand
         self.fname = "sqrt"
@@ -22,6 +22,9 @@ class Root(MathNode):
 
     def to_wolfram(self):
         return f"Pow[{self.radicand.to_wolfram()}, Inv[{self.degree.to_wolfram()}]]"
+
+    def to_z3(self):
+        return (self.radicand.to_z3) ** (1.0 / self.degree.to_z3())
 
     @staticmethod
     def consume(parser: "Parser", command: str):

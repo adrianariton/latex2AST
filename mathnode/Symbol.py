@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from mathnode.parser import Parser
 from mathnode.MathNode import MathNode
+import z3
 
 
 class Symbol(MathNode):
@@ -16,6 +17,9 @@ class Symbol(MathNode):
 
     def to_wolfram(self):
         return self.name
+
+    def to_z3(self):
+        return z3.Real(self.name)
 
     @staticmethod
     def consume(parser: "Parser", command: str):

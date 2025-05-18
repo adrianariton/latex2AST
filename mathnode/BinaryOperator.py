@@ -52,7 +52,7 @@ class BinaryOperator(MathNode):
         ["^"],
     ]
 
-    def __init__(self, operator, left, right):
+    def __init__(self, operator, left: MathNode, right: MathNode):
         self.operator = operator
         self.left = left
         self.right = right
@@ -61,6 +61,30 @@ class BinaryOperator(MathNode):
     @staticmethod
     def get_eq_ops():
         return BinaryOperator.OPERATORS[1]
+
+    def to_z3(self):
+        if self.operator == "+":
+            return self.left.to_z3() + self.right.to_z3()
+        elif self.operator == "-":
+            return self.left.to_z3() - self.right.to_z3()
+        elif self.operator == "*":
+            return self.left.to_z3() * self.right.to_z3()
+        elif self.operator == "/":
+            return self.left.to_z3() / self.right.to_z3()
+        elif self.operator == "^":
+            return self.left.to_z3() ** self.right.to_z3()
+        elif self.operator == "=" or self.operator == "eq":
+            return self.left.to_z3() == self.right.to_z3()
+        elif self.operator == ">" or self.operator == "gt":
+            return self.left.to_z3() > self.right.to_z3()
+        elif self.operator == "<" or self.operator == "lt":
+            return self.left.to_z3() < self.right.to_z3()
+        elif self.operator == "ge":
+            return self.left.to_z3() >= self.right.to_z3()
+        elif self.operator == "le":
+            return self.left.to_z3() >= self.right.to_z3()
+        else:
+            raise Exception(f"{self.operator} has no equivalent in z3")
 
     def to_latex(self):
         left_latex = self.left.to_latex()

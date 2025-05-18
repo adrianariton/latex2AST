@@ -8,6 +8,12 @@ if TYPE_CHECKING:
 class MathNode:
     example_message = r"- no examples -"
 
+    def __init__(self):
+        self.fname = None
+
+    def to_z3(self):
+        raise NotImplementedError("to_z3: Subclasses must implement this method.")
+
     def to_latex(self):
         raise NotImplementedError("to_latex: Subclasses must implement this method.")
 
