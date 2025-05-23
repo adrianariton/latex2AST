@@ -4,6 +4,9 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from mathnode.parser import Parser
 from mathnode.MathNode import MathNode
+from mathnode.Symbol import Symbol
+from mathnode.Constant import Constant
+import z3
 
 
 class Superscript(MathNode):
@@ -33,3 +36,18 @@ class Subscript(MathNode):
 
     def to_latex(self):
         return f"sub({self.base.to_latex()}_{{{self.subscript.to_latex()}}})"
+
+    def to_z3(self):
+        def _get(b):
+            if isinstance(b, Symbol):
+                return b.name
+            if isinstance(b, Constant):
+                return str(b.value)
+            return None
+
+        if isinstance(self.base, Symbol) and (
+            isinstance(self.subscript, Symbol) or isinstance(self.subscript, Constant)
+        ):
+            return z3.Real(self.base.name + "_" + _get(self.subscript))
+        else:
+            raise Exception("Invalid operands for Z3 Subscript")

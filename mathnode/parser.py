@@ -83,6 +83,9 @@ class Parser:
                 if isinstance(left, Constant):
                     right = self.parse_term()
                     left = Apply(left, right)
+                elif token_type != "COMMAND":
+                    right = self.parse_term()
+                    left = Apply(left, right)  ## aici
                 else:
                     break
             else:

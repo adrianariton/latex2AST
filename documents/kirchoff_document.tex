@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{amsmath, circuitikz}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Kirchhoff's Law Problem}
+
+\textbf{Problem:}
+
+Consider the following circuit:
+
+\begin{center}
+\begin{circuitikz}[american]
+    \draw
+    (0,0) to[battery1, l=10V] (0,4)
+          to[R, l=$R_1 = 2$] (4,4)
+          to[R, l=$R_2 = 3$] (4,0)
+          to[R, l=$R_3 = 5$] (0,0);
+\end{circuitikz}
+\end{center}
+
+All components are in series in a single loop powered by a 10V battery. Use Kirchhoff’s Voltage Law to calculate the current \( I \) flowing in the circuit and the voltage drops across each resistor.
+
+\vspace{1em}
+\textbf{Solution:}
+
+Using Kirchhoff’s Voltage Law (KVL), we sum the potential differences around the closed loop:
+
+\[
+V - V_{1} - V_{2} - V_{3} = 0
+\]
+
+Ohm's Law gives:
+
+\[
+V_{1} = I R_1
+\]
+\[
+ V_{2} = I R_2
+\]
+\[
+V_{3} = I R_3
+\]
+
+Substitute:
+
+\[
+10 - 2I - 3I - 5I = 0
+\]
+
+\[
+10 - 10I = 0 
+\]
+
+\[
+I = 1
+\]
+
+Now compute voltage drops:
+
+\[
+V_{1} = 1 \times 2
+\]
+\[
+V_{2} = 1 \times 3
+\]
+\[
+V_{3} = 1 \times 5
+\]
+
+\textbf{Final Answer:}
+
+\begin{itemize}
+  \item Current in the circuit: \( \boxed{1\,\text{A}} \)
+  \item Voltage drop across \( R_1 \): \( \boxed{2\,\text{V}} \)
+  \item Voltage drop across \( R_2 \): \( \boxed{3\,\text{V}} \)
+  \item Voltage drop across \( R_3 \): \( \boxed{5\,\text{V}} \)
+\end{itemize}
+
+\end{document}

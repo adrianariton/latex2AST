@@ -15,16 +15,22 @@ class BinaryOperator(MathNode):
         "or": "Or",
         "+": "Plus",
         "*": "Times",
+        "times": "Times",
         "^": "Power",
         "-": "_Minus",
         "/": "_Divide",
+        "div": "_Divide",
         "=": "Equals",
+        "approx": "Equals",  # TODO: check
         "<": "Less",
         "lt": "Less",
         "le": "LessOrEqual",
+        "leq": "LessOrEqual",
         ">": "Greater",
+        "to": "To",
         "gt": "Greater",
         "ge": "GreaterOrEqual",
+        "geq": "GreaterOrEqual",
         "subset": "Subset",  # TODO: check
         "supset": "Supset",  # TODO: check
         "subseteq": "Subseteq",  # TODO: check
@@ -37,7 +43,9 @@ class BinaryOperator(MathNode):
             "to",
             "eq",
             "ge",
+            "geq",
             "le",
+            "leq",
             "lt",
             "gt",
             ">",
@@ -46,6 +54,7 @@ class BinaryOperator(MathNode):
             "supset",
             "subseteq",
             "supseteq",
+            "approx",
         ],
         ["+", "-"],
         ["*", "/", "times", "div", "otimes", "oplus", "cup", "cap"],
@@ -69,19 +78,21 @@ class BinaryOperator(MathNode):
             return self.left.to_z3() - self.right.to_z3()
         elif self.operator == "*":
             return self.left.to_z3() * self.right.to_z3()
+        elif self.operator == "times":
+            return self.left.to_z3() * self.right.to_z3()
         elif self.operator == "/":
             return self.left.to_z3() / self.right.to_z3()
         elif self.operator == "^":
             return self.left.to_z3() ** self.right.to_z3()
-        elif self.operator == "=" or self.operator == "eq":
+        elif self.operator == "=" or self.operator == "eq" or self.operator == "approx":
             return self.left.to_z3() == self.right.to_z3()
         elif self.operator == ">" or self.operator == "gt":
             return self.left.to_z3() > self.right.to_z3()
         elif self.operator == "<" or self.operator == "lt":
             return self.left.to_z3() < self.right.to_z3()
-        elif self.operator == "ge":
+        elif self.operator == "ge" or self.operator == "geq":
             return self.left.to_z3() >= self.right.to_z3()
-        elif self.operator == "le":
+        elif self.operator == "le" or self.operator == "leq":
             return self.left.to_z3() >= self.right.to_z3()
         else:
             raise Exception(f"{self.operator} has no equivalent in z3")

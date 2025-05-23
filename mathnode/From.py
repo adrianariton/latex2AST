@@ -19,6 +19,7 @@ class CommandFrom:
         self.cmdrules = cmdrules
 
     def __call__(self, command) -> type(MathNode):
+        print(f"{command=}")
         if command == "frac":
             return Fraction
         elif command == "sqrt":

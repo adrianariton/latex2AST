@@ -8,7 +8,10 @@ class Z3Context:
 
     def add(self, node: MathNode):
         try:
-            z3_node = node.to_z3()
+            if isinstance(node, MathNode):
+                z3_node = node.to_z3()
+            else:
+                z3_node = node
         except Exception as e:
             print(f"""Could not convert {node.to_latex()} to z3:\n\t{e.with_traceback()}""")
             return

@@ -5,8 +5,10 @@ if TYPE_CHECKING:
     from mathnode.parser import Parser
 from mathnode.MathNode import MathNode
 from mathnode.Constant import Constant
+from mathnode.Symbol import Symbol
 from mathnode.Integral import Integral
 from mathnode.utils import forbidden
+import z3
 
 
 def is_var_char(c):
@@ -302,7 +304,13 @@ def abstract_rule_from_template(class_object: type[MathNode], function_name: str
     return AbstractRuleNode
 
 
-def abstract_rule_from(regex: str, function_name: str, params: list[str] | None = None):
+def default_converter(me):
+    raise Exception("Not Implemented")
+
+
+def abstract_rule_from(
+    regex: str, function_name: str, params: list[str] | None = None, _to_z3=default_converter
+):
     """A rule should follow the following parrern
     \\function_{@param}_{@param}..._{@param} {@param}{@param}{@param}...{@param}
 
@@ -344,6 +352,9 @@ def abstract_rule_from(regex: str, function_name: str, params: list[str] | None 
             str_rep = {k: v.to_wolfram() for k, v in self.param_dict.items()}
             return f"{function_name.title()}[{','.join(str_rep.values())}]"
 
+        def to_z3(self):
+            return _to_z3(self)
+
         @staticmethod
         def consume(parser: "Parser", command: str):
             params_all = cmd_rule.consume(parser, command)
@@ -352,9 +363,19 @@ def abstract_rule_from(regex: str, function_name: str, params: list[str] | None 
     return AbstractRuleNode
 
 
+def _Delta_Z3_Conv(me: MathNode):
+    assert isinstance(me.x, Symbol), "Delta can only be applied to symbols!"
+    return z3.Real("Delta_" + me.x.name)
+
+
+Z3_Conv_rules = {"Delta": _Delta_Z3_Conv}
+
 LaTeX_Additional_Rules = {
     "prod": abstract_rule_from(
         "\\prod_{@int_min}?^{@int_max|\\inf} ?{@expr|10}", function_name="prod"
+    ),
+    "Delta": abstract_rule_from(
+        "\\Delta {@x}", function_name="Delta", _to_z3=Z3_Conv_rules["Delta"]
     ),
     "sfrac": abstract_rule_from("\\sfrac{@den1}{@den2}?!{@expr}", function_name="sfrac"),
     "deriv": abstract_rule_from("\\deriv?*[@dtims|1]{@f}{@x}?!{@xexpr}", function_name="deriv"),
@@ -363,7 +384,7 @@ LaTeX_Additional_Rules = {
     "binom": abstract_rule_from("\\binom{@n}{@k}", function_name="binom"),
     "vec": abstract_rule_from("\\vec?_{@i|1} ?{@x}", function_name="vec"),
     "norm": abstract_rule_from("\\norm?{@x}", function_name="norm"),
-    "lim": abstract_rule_from("\\lim_{@vartoval}{@expr}", function_name="lim"),
+    "lim": abstract_rule_from("\\lim_{@vartoval}?{@expr}", function_name="lim"),
     "transpose": abstract_rule_from("\\transpose?_{@A}?{@A}", function_name="transpose"),
     "inv": abstract_rule_from("\\inv?_{@f}?{@x|0}", function_name="inv"),
     "piecewise": abstract_rule_from("\\piecewise_{@x}?{@cond}?{@val|0}", function_name="piecewise"),
