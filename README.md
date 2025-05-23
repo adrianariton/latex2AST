@@ -1,5 +1,13 @@
 This converts a latex expression to an AST which can then be converted to any language by creating the to_<language> implementations in the MathNode class and its inheritors.
 
+## What it does:
+
+This convers latex to an AST based on the rules defined in mathnode/Rule.py (see below explained).
+Then it tries to convers said AST to z3 and if it can (i.e. the equation doesnt contain limits, transcendental numbers or functions, derivatives and so on), it adds it to the z3 context and checks for satisfiability.
+
+
+## How to run?
+
 to run:
 ```sh
 python3 index.py <document_path_or_index>
@@ -239,6 +247,7 @@ Z3 Says...
 documents/kirchoff_document_error.tex is unsat
 ```
 
+## \[DEVELOPMENT\] Adding rules
 
 if some latex rules are not **yet** implemented, they can be specified in `mathnode/Rule.py` in this dictionary:
 
